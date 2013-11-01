@@ -51,6 +51,12 @@ public class Tree<T extends TreeNode> {
      * to see if there is a subtree N whose label is equal to {@link otherLabel}.
      */
     public Tree<T> findChild(T otherLabel) {
+      Tree<T> child = this.getFirstChild();
+      while (child.hasNext()) {
+        if (child.getLabel().equals(otherLabel)) {return child;}
+        child = child.getNextSibling();
+      }
+      return null;
 
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	// Implement this method.
@@ -112,6 +118,10 @@ public class Tree<T extends TreeNode> {
 	 // Hint: Begin with the following:
 	 System.out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
 
+   String tab_length = "";
+   if (this.leaf() == true) {
+     System.out.printf("%s\n%s\n",this.getLabel().preString(), this.getLabel().postString());
+   
 
 
 
