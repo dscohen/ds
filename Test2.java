@@ -19,22 +19,17 @@ public class Test2 extends TestHarness {
     public Test2(String s) { super(s); }
 
     public boolean test() {
-	    return false;
-	}
-	fs.display();
 
 	// make sure 'sample/foo/bar' is in the file system
-	Tree<FileNode> rt = fs.getTree();
-	if(!rt.getLabel().getName().equals("ROOT"))
-	    return false;
-	Tree<FileNode> sampleT = rt.findChild(new FileNode("sample",true));
-	if(sampleT == null) return false;
-	Tree<FileNode> fooT    = sampleT.findChild(new FileNode("foo",true));
-	if(fooT == null) return false;
-	Tree<FileNode> barT    = fooT.findChild(new FileNode("bar",true));
-	if(fooT == null) return false;
-	return true;
-	
-    }
+  Tree<FileNode> apartment = new Tree<FileNode>();
+ apartment.displayXML();
+ Tree<FileNode> kitchen;
+ Tree<FileNode> refigerator;
+ Tree<FileNode> milk;
+ Tree<FileNode> eggs;
+ Tree<FileNode> bathroom;
+ Tree<FileNode> shower;
 
+ return true;
+}
 }
