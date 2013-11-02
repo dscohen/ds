@@ -19,114 +19,129 @@
 import java.io.File;
 
 public class Tree<T extends TreeNode> {
-    private T label;
-    private Tree<T> parent;
-    /** 
-     * next node on the list of parent's children
-     */
-    private Tree<T> nextSibling; 
-    /**
-     * first in the linked list of children
-     */
-    private Tree<T> firstChild;
+  private T label;
+  private Tree<T> parent;
+  /** 
+   * next node on the list of parent's children
+   */
+  private Tree<T> nextSibling; 
+  /**
+   * first in the linked list of children
+   */
+  private Tree<T> firstChild;
 
-    public Tree(T l) {
-	label = l; parent = null; nextSibling = null; firstChild = null; 
-    }
-    public Tree() {
-	label = null; parent = null; nextSibling = null; firstChild = null; 
-    }
-                                 
-    /**
-     * getters and setters
-     */
-    public T getLabel() { return label; }  
-    public void setLabel(T v) { label = v; }
-    public Tree<T> getParent() { return parent;}
-    public Tree<T> getNextSibling() { return nextSibling;}
-    public Tree<T> getFirstChild() { return firstChild;}
+  public Tree(T l) {
+    label = l; parent = null; nextSibling = null; firstChild = null; 
+  }
+  public Tree() {
+    label = null; parent = null; nextSibling = null; firstChild = null; 
+  }
 
-    /**
-     * findChild: searches through the *immediate* children of the tree
-     * to see if there is a subtree N whose label is equal to {@link otherLabel}.
-     */
-    public Tree<T> findChild(T otherLabel) {
-      Tree<T> child = this.getFirstChild();
-      while (child.hasNext()) {
-        if (child.getLabel().equals(otherLabel)) {return child;}
-        child = child.getNextSibling();
+  /**
+   * getters and setters
+   */
+  public T getLabel() { return label; }  
+  public void setLabel(T v) { label = v; }
+  public Tree<T> getParent() { return parent;}
+  public Tree<T> getNextSibling() { return nextSibling;}
+  public Tree<T> getFirstChild() { return firstChild;}
+
+  /**
+   * findChild: searches through the *immediate* children of the tree
+   * to see if there is a subtree N whose label is equal to {@link otherLabel}.
+   */
+  public Tree<T> findChild(T otherLabel) {
+    Tree<T> child = this.getFirstChild();
+    while (child.nextSibling == null) {
+      if (child.getLabel().equals(otherLabel)) {return child;}
+      child = child.getNextSibling();
+    }
+    return null;
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // Implement this method.
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+  }
+
+  /**
+   * Add C to the front of the children of this
+   */
+  public void addChild(Tree<T> c) {
+    c.parent = this;
+    if (firstChild == null) 
+      firstChild = c;
+    else {
+      c.nextSibling = firstChild;
+      firstChild = c;
+    }
+  }
+  /**
+   * Check if the node is a leaf
+   */
+  public boolean Leaf() { return firstChild==null; }
+
+  /**
+   * Convert the tree into a string. The structure is indicated by
+   * square brackets. Uses a preorder listing.
+   */
+  public String toString() {
+    String S = "[ " + label.toString();
+    Tree<T> N = firstChild;
+    while (N != null) {
+      S = S + " " + N.toString();
+      N = N.nextSibling;
+    }
+    return S+" ]";
+  }
+
+  /**
+   * displayXML: displays the tree in XML format. 
+   */
+  public void displayXML() {
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // Implement this method.  Hint: You will need to do a
+    // combination of pre-Order and post-Order. That is, at each
+    // level you will need to call the label's "preString()"
+    // method before any recursive calls and then call the
+    // label's "postString()" method afterward. preString() and
+    // postString() have already been implemented for you in
+    // FileNode.java.
+    //
+    // IMPORTANT: make sure you use indenting, increasing the
+    // indent by 3 at each new level.
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    // Hint: Begin with the following:
+
+
+
+
+      System.out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
+      System.out.println(this.helpMePls(1));
+
+
+  }
+  public String helpMePls(int indent) {
+    if (this.Leaf() == true) {
+      if (this.nextSibling != null) {
+       return this.getLabel().preString() +this.getLabel().getName()+this.getLabel().postString() + "\n" + this.getNextSibling().helpMePls(indent);
       }
-      return null;
-
-	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	// Implement this method.
-	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
+      return this.getLabel().preString()+this.getLabel().getName()+this.getLabel().postString()+"\n";
+    }
+    
+    Tree<T> child = getFirstChild();
+    if(child.nextSibling != null) {
+    return this.getLabel().preString()+this.getLabel().getName()+ "\n" + "\t"+ child.helpMePls(indent) + this.getLabel().postString() + "\n"+child.getNextSibling().helpMePls(indent); 
     }
 
-    /**
-     * Add C to the front of the children of this
-     */
-    public void addChild(Tree<T> c) {
-         c.parent = this;
-         if (firstChild == null) 
-           firstChild = c;
-         else {
-             c.nextSibling = firstChild;
-             firstChild = c;
-            }
-    }
-    /**
-     * Check if the node is a leaf
-     */
-    public boolean Leaf() { return firstChild==null; }
-
-    /**
-     * Convert the tree into a string. The structure is indicated by
-     * square brackets. Uses a preorder listing.
-     */
-    public String toString() {
-       String S = "[ " + label.toString();
-       Tree<T> N = firstChild;
-       while (N != null) {
-          S = S + " " + N.toString();
-          N = N.nextSibling;
-        }
-       return S+" ]";
-     }
-
-    /**
-     * displayXML: displays the tree in XML format. 
-     */
-     public void displayXML() {
-
-	 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	 // Implement this method.  Hint: You will need to do a
-	 // combination of pre-Order and post-Order. That is, at each
-	 // level you will need to call the label's "preString()"
-	 // method before any recursive calls and then call the
-	 // label's "postString()" method afterward. preString() and
-	 // postString() have already been implemented for you in
-	 // FileNode.java.
-	 //
-	 // IMPORTANT: make sure you use indenting, increasing the
-	 // indent by 3 at each new level.
-	 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	 // Hint: Begin with the following:
-	 System.out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
-
-   String tab_length = "";
-   if (this.leaf() == true) {
-     System.out.printf("%s\n%s\n",this.getLabel().preString(), this.getLabel().postString());
-   
 
 
+    return "help";
+  }
 
 
-     }
-
-   
 }
