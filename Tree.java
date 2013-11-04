@@ -121,26 +121,24 @@ public class Tree<T extends TreeNode> {
 
 
       System.out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
-      System.out.println(this.helpMePls(1));
-
+      XML(0);
 
   }
-  public String helpMePls(int indent) {
-    if (this.Leaf() == true) {
-      if (this.nextSibling != null) {
-       return this.getLabel().preString() +this.getLabel().getName()+this.getLabel().postString() + "\n" + this.getNextSibling().helpMePls(indent);
-      }
-      return this.getLabel().preString()+this.getLabel().getName()+this.getLabel().postString()+"\n";
+  public void XML(int indent) {
+    for (int i = 0; i < indent; i++) {
+      System.out.print(" ");
+    }
+    System.out.printf("%s\n", label.preString());
+    Tree<T> N = firstChild;
+    while (N != null) {
+      N.XML(indent+3);
+      N = N.nextSibling;
     }
     
-    Tree<T> child = getFirstChild();
-    if(child.nextSibling != null) {
-    return this.getLabel().preString()+this.getLabel().getName()+ "\n" + "\t"+ child.helpMePls(indent) + this.getLabel().postString() + "\n"+child.getNextSibling().helpMePls(indent); 
+    for (int i = 0; i < indent; i++) {
+      System.out.print(" ");
     }
-
-
-
-    return "help";
+    System.out.printf("%s\n", label.postString());
   }
 
 

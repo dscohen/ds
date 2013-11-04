@@ -21,15 +21,13 @@ public class Test2 extends TestHarness {
     public boolean test() {
 
 	// make sure 'sample/foo/bar' is in the file system
-  Tree<FileNode> apartment = new Tree<FileNode>();
- apartment.displayXML();
- Tree<FileNode> kitchen;
- Tree<FileNode> refigerator;
- Tree<FileNode> milk;
- Tree<FileNode> eggs;
- Tree<FileNode> bathroom;
- Tree<FileNode> shower;
 
- return true;
+      Tree<FileNode> root = null;
+      root = new Tree<FileNode>(new FileNode("Apartment", true));
+      root.addChild(new Tree<FileNode>(new FileNode("Kitchen", true)));
+      root.addChild(new Tree<FileNode>(new FileNode("Refrigerator", true)));
+      root.displayXML();
+      System.out.println(root);
+      return true;
 }
 }
