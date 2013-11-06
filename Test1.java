@@ -29,7 +29,7 @@ public class Test1 extends TestHarness {
 
 	// make sure 'sample/foo/bar' is in the file system
 	Tree<FileNode> rt = fs.getTree();
-	if(!rt.getLabel().getName().equals("ROOT"))
+	if(!rt.getLabel().getName().equals("CWD"))
 	    return false;
 	Tree<FileNode> sampleT = rt.findChild(new FileNode("sample",true));
 	if(sampleT == null) return false;

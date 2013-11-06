@@ -49,10 +49,12 @@ public class Tree<T extends TreeNode> {
   /**
    * findChild: searches through the *immediate* children of the tree
    * to see if there is a subtree N whose label is equal to {@link otherLabel}.
+   *
+   * @param otherLabel The label of the node that you are trying to find.
    */
   public Tree<T> findChild(T otherLabel) {
     Tree<T> child = this.getFirstChild();
-    while (child.nextSibling == null) {
+    while (child != null) {
       if (child.getLabel().equals(otherLabel)) {return child;}
       child = child.getNextSibling();
     }
@@ -128,16 +130,21 @@ public class Tree<T extends TreeNode> {
     for (int i = 0; i < indent; i++) {
       System.out.print(" ");
     }
+    if (this.Leaf()) {
+    System.out.printf("%s", label.preString());
+    } else {
     System.out.printf("%s\n", label.preString());
+    }
     Tree<T> N = firstChild;
     while (N != null) {
       N.XML(indent+3);
       N = N.nextSibling;
     }
-    
+   if (!this.Leaf()) {
     for (int i = 0; i < indent; i++) {
       System.out.print(" ");
     }
+   }
     System.out.printf("%s\n", label.postString());
   }
 

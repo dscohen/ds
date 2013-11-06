@@ -26,6 +26,14 @@ public class Test2 extends TestHarness {
       root = new Tree<FileNode>(new FileNode("Apartment", true));
       root.addChild(new Tree<FileNode>(new FileNode("Kitchen", true)));
       root.addChild(new Tree<FileNode>(new FileNode("Refrigerator", true)));
+      Tree<FileNode> a = new Tree<FileNode>(new FileNode("a", true));
+      Tree<FileNode> b = new Tree<FileNode>(new FileNode("b", false));
+      Tree<FileNode> c = new Tree<FileNode>(new FileNode("c", false));
+      Tree<FileNode> d = new Tree<FileNode>(new FileNode("d", false));
+      root.addChild(a);
+      a.addChild(b);
+      a.addChild(c);
+      a.addChild(d);
       root.displayXML();
       System.out.println(root);
       return true;
