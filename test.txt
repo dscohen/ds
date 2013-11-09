@@ -1,0 +1,214 @@
+Test t1: {IN -> [SomeFilefoosample] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="CWD"></dir>
+IN -> [SomeFilefoo] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="sample"></dir>
+IN -> [SomeFile] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="foo"></dir>
+[ SomeFile ]
+IN -> [Bazzing.txtbazsample] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="CWD">
+   <dir name="sample">
+      <dir name="foo">
+         <file name="SomeFile"></file>
+      </dir>
+   </dir>
+</dir>
+IN -> [Bazzing.txtbaz] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="sample">
+   <dir name="foo">
+      <file name="SomeFile"></file>
+   </dir>
+</dir>
+IN -> [Bazzing.txt] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="baz"></dir>
+[ Bazzing.txt ]
+IN -> [Bazzerbazsample] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="CWD">
+   <dir name="sample">
+      <dir name="baz">
+         <file name="Bazzing.txt"></file>
+      </dir>
+      <dir name="foo">
+         <file name="SomeFile"></file>
+      </dir>
+   </dir>
+</dir>
+IN -> [Bazzerbaz] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="sample">
+   <dir name="baz">
+      <file name="Bazzing.txt"></file>
+   </dir>
+   <dir name="foo">
+      <file name="SomeFile"></file>
+   </dir>
+</dir>
+IN -> [Bazzer] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="baz">
+   <file name="Bazzing.txt"></file>
+</dir>
+[ Bazzer ]
+IN -> [FileCbarfoosample] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="CWD">
+   <dir name="sample">
+      <dir name="baz">
+         <file name="Bazzer"></file>
+         <file name="Bazzing.txt"></file>
+      </dir>
+      <dir name="foo">
+         <file name="SomeFile"></file>
+      </dir>
+   </dir>
+</dir>
+IN -> [FileCbarfoo] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="sample">
+   <dir name="baz">
+      <file name="Bazzer"></file>
+      <file name="Bazzing.txt"></file>
+   </dir>
+   <dir name="foo">
+      <file name="SomeFile"></file>
+   </dir>
+</dir>
+IN -> [FileCbar] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="foo">
+   <file name="SomeFile"></file>
+</dir>
+IN -> [FileC] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="bar"></dir>
+[ FileC ]
+IN -> [FileBbarfoosample] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="CWD">
+   <dir name="sample">
+      <dir name="baz">
+         <file name="Bazzer"></file>
+         <file name="Bazzing.txt"></file>
+      </dir>
+      <dir name="foo">
+         <dir name="bar">
+            <file name="FileC"></file>
+         </dir>
+         <file name="SomeFile"></file>
+      </dir>
+   </dir>
+</dir>
+IN -> [FileBbarfoo] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="sample">
+   <dir name="baz">
+      <file name="Bazzer"></file>
+      <file name="Bazzing.txt"></file>
+   </dir>
+   <dir name="foo">
+      <dir name="bar">
+         <file name="FileC"></file>
+      </dir>
+      <file name="SomeFile"></file>
+   </dir>
+</dir>
+IN -> [FileBbar] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="foo">
+   <dir name="bar">
+      <file name="FileC"></file>
+   </dir>
+   <file name="SomeFile"></file>
+</dir>
+IN -> [FileB] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="bar">
+   <file name="FileC"></file>
+</dir>
+[ FileB ]
+IN -> [FileAbarfoosample] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="CWD">
+   <dir name="sample">
+      <dir name="baz">
+         <file name="Bazzer"></file>
+         <file name="Bazzing.txt"></file>
+      </dir>
+      <dir name="foo">
+         <dir name="bar">
+            <file name="FileB"></file>
+            <file name="FileC"></file>
+         </dir>
+         <file name="SomeFile"></file>
+      </dir>
+   </dir>
+</dir>
+IN -> [FileAbarfoo] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="sample">
+   <dir name="baz">
+      <file name="Bazzer"></file>
+      <file name="Bazzing.txt"></file>
+   </dir>
+   <dir name="foo">
+      <dir name="bar">
+         <file name="FileB"></file>
+         <file name="FileC"></file>
+      </dir>
+      <file name="SomeFile"></file>
+   </dir>
+</dir>
+IN -> [FileAbar] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="foo">
+   <dir name="bar">
+      <file name="FileB"></file>
+      <file name="FileC"></file>
+   </dir>
+   <file name="SomeFile"></file>
+</dir>
+IN -> [FileA] -> OUT
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="bar">
+   <file name="FileB"></file>
+   <file name="FileC"></file>
+</dir>
+[ FileA ]
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="CWD">
+   <dir name="sample">
+      <dir name="baz">
+         <file name="Bazzer"></file>
+         <file name="Bazzing.txt"></file>
+      </dir>
+      <dir name="foo">
+         <dir name="bar">
+            <file name="FileA"></file>
+            <file name="FileB"></file>
+            <file name="FileC"></file>
+         </dir>
+         <file name="SomeFile"></file>
+      </dir>
+   </dir>
+</dir>
+} PASS.
+Test t2: {<?xml version="1.0" encoding="ISO-8859-1"?>
+<dir name="Apartment">
+   <dir name="a">
+      <file name="d"></file>
+      <file name="c"></file>
+      <file name="b"></file>
+   </dir>
+   <dir name="Refrigerator"></dir>
+   <dir name="Kitchen"></dir>
+</dir>
+[ Apartment [ a [ d ] [ c ] [ b ] ] [ Refrigerator ] [ Kitchen ] ]
+} PASS.
+Tests Completed. All passed.

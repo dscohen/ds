@@ -53,6 +53,7 @@ public class Tree<T extends TreeNode> {
      * @param otherLabel The label of the node that you are trying to find.
      */
     public Tree<T> findChild(T otherLabel) {
+        if (otherLabel == null) {return null;}
         Tree<T> child = this.getFirstChild();
         while (child != null) {
             if (child.getLabel().equals(otherLabel)) {return child;}

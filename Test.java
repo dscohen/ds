@@ -20,6 +20,7 @@ public class Test {
 //Test1 t1 = new Test1("t1");
 		Test1 t1 = new Test1("t1");
 		Test2 t2 = new Test2("t2");
+		Test3 t3 = new Test3("t3");
 
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		// %%%%% Register your new tests here, by extending this method %%%%%

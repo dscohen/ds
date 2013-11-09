@@ -42,7 +42,6 @@ public class FileSystem {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // deque->current node to find
     String dequed_node;
-    System.out.println(filePathQueue);
     try {
       dequed_node = filePathQueue.dequeue();
     } catch (InvalidOperationException e) {
@@ -56,7 +55,6 @@ public class FileSystem {
     } else {
       if (size == 0) {
         Tree <FileNode> f = new Tree<FileNode>  (new FileNode(dequed_node, false));
-        System.out.println(f);
       t.addChild(f);
       }
       else {

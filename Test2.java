@@ -34,8 +34,6 @@ public class Test2 extends TestHarness {
       a.addChild(b);
       a.addChild(c);
       a.addChild(d);
-      root.displayXML();
-      System.out.println(root);
       return true;
 }
 }

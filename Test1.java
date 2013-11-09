@@ -36,7 +36,7 @@ public class Test1 extends TestHarness {
 	Tree<FileNode> fooT    = sampleT.findChild(new FileNode("foo",true));
 	if(fooT == null) return false;
 	Tree<FileNode> barT    = fooT.findChild(new FileNode("bar",true));
-	if(fooT == null) return false;
+	if(barT == null) return false;
 	return true;
 	
     }
