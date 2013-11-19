@@ -32,11 +32,13 @@ public class Test1 extends TestHarness {
       m.put("asdvark", 22);
       m.put("axdvark", 32);
       m.put("ardvark", 42);
+      m.remove("aydvark");
       m.iterator();
       for (String i : m) {
         System.out.println(i);
       }
       System.out.println(m.get("aqdvark"));
+      System.out.println(m.calculateStats());
 
 	    //The result should be null
 	    return (true);

@@ -95,11 +95,11 @@ public class SkiplistMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
     //cycle through same level
     while (level != -1) {
       //see if Current Node is equal
-        steps++;
         if (N.flinks.get(level).key == null) {
           level--;
           continue;
         }
+        steps++;
         int ct = toFind.compareTo(N.flinks.get(level).key);
         if (ct == 0) {
           return N.flinks.get(level);}
@@ -179,17 +179,87 @@ public class SkiplistMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
     return true;
 
   }
-
-  public SkiplistMap<Integer,Integer> calculateStats(){
-      SkiplistMap<Integer,Integer> stats = new SkiplistMap<Integer, Integer>();
-      return stats;
+  @Override public String toString() {
+    this.iterator();
+    String build = "";
+    for (K key : this) {
+      try {
+      SkiplistMapNode<K,V> N = find(key);
+      build += N.toString() + "\n";
+      } catch (SortedMapException e) {}
+    }
+    return build;
   }
-       
 
-    //How do I do this without recursion?
+  public SkiplistMap<Integer, Integer> calculateStats() {
+    SkiplistMap<Integer,Integer> stats = new SkiplistMap<Integer,Integer>();
+    this.iterator();
+    for (K ke : this) {
+      try {
+        SkiplistMapNode<K,V> N = this.find(ke);
+        SkiplistMapNode<Integer, Integer> Z = stats.find(steps);
+        if (Z.key != null && Z.key.compareTo(steps) == 0) {
+          Z.value += 1;}
+        else {
+          stats.put(steps, 1);}
+      } catch (Exception e) {System.out.println(e);}
+    }
+    
+    Deque<SkiplistMapNode<K,V>> stack = new LinkedList<SkiplistMapNode<K,V>>();
+    //int depth = 1;
+    //if (root ==null){
+      //try {
+      //stats.put(0,0); return stats;
+      //} catch (SortedMapException e) {}}
+    //Skipl<K,V> Noderoot;
+    ////add left chain
+    //while (N != null){
+      //stack.push(N);
+      //N = N.left;
+      //depth++;
+    //}
+    //while(stack.size() != 0) {
+      //depth--;
+      //N = stack.pop();
+      //System.out.println(depth + " " + N.toString());
+      //try {
+        //Skipl<IntegNodeInteger> adding_node = stats.find(depth);
+        //stats.put(depth, adding_node.value + 1);
+      //} catch(Exception e) {
+        //try {
+        //stats.put(depth, 1);
+        //} catch (SortedMapException f) {}
+      //}
+      ////add left chain of right node
+      //if (N.right != null){
+        //N = N.right;
+        //System.out.println(N);
+        //while (N != null){
+          //depth++;
+          //System.out.println(depth +" adding left" +N);
+          //stack.push(N);
+          //N = N.left;
+        //}
+      //}
+    //}
+    //System.out.println(depth);
+    return stats;
 
 
 
+
+    //Get left most, then as un pop, get right. Keep track of depth(steps)
   }
+  
+
+}
+
+
+
+
+
+
+
+//Don't forget to override toString()
 
 

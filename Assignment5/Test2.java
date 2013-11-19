@@ -29,15 +29,18 @@ public class Test2 extends TestHarness {
       m.put("aydvark", 7);
       m.put("audvark", 8);
       m.put("afdvark", 9);
-      m.put("addvark", 0);
+      m.put("addvark", 12);
       m.put("asdvark", 22);
+      m.remove("aqdvark");
       m.put("axdvark", 32);
+      m.put("addvark", 22);
       m.put("ardvark", 42);
       m.iterator();
       for (String i : m) {
         System.out.println(i);
       }
-      System.out.println(m.get("aqdvark"));
+      System.out.println(m.get("addvark"));
+      System.out.println(m.calculateStats());
 
 	    //The result should be null
 	    return (true);
