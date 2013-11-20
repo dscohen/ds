@@ -20,10 +20,10 @@ public class BSTMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
   //////////////////////////////////////////////////////////////////////////
   //
   //////////////////////////////////////////////////////////////////////////
+//remove will remove last next()
   class BSTInorderIterator<K extends Comparable<K>> implements Iterator<K> {
     Deque<BSTMapNode<K,V>> stack;
     int edition;
-
     BSTInorderIterator(BSTMapNode<K,V> root){
       stack = new LinkedList<BSTMapNode<K,V>>();
       addLeftChain(root);
@@ -168,6 +168,10 @@ public class BSTMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
   }
 
 
+  /**
+   * Helper function to delete lead node.
+   * @param L Node to remove
+   */
 
 
 
@@ -181,12 +185,22 @@ public class BSTMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
     }
   }
 
+  /**
+   * Helper function to find farthest right node.
+   * @param N node to get rightmost descendent of.
+   * @return rightmost node.
+   */
   private BSTMapNode<K,V> getRightmostDecendant(BSTMapNode<K,V> N) {
     while (N.right != null) {
       N = N.right;
     }
     return N;
   }
+
+  /**
+   * Helper function to keep order upon remove.
+   * @param N to shift up
+   */
   private void shiftNodeUp(BSTMapNode<K,V> N) throws SortedMapException
   {
     if(N.parent == null) throw new SortedMapException("Can't shift up root node");
@@ -248,6 +262,13 @@ public class BSTMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
     }
 
   }
+  /**
+   * Returns string of map.
+   * <p>
+   * format if os "Key" "Value"\n
+   *
+   * @return string.
+   */
   @Override public String toString() {
     this.iterator();
     String build = "";
@@ -259,6 +280,12 @@ public class BSTMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
     }
     return build;
   }
+  /**
+   * Returns stats of map where it calculates # of nodes reaches in # of steps.
+   * <p>
+   * format is of "Steps" "Nodes Reachable"
+   * @return Map|Integer,Integer| of above format.
+   */
 
   public BSTMap<Integer, Integer> calculateStats() {
     BSTMap<Integer,Integer> stats = new BSTMap<Integer,Integer>();
