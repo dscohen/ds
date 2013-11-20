@@ -28,10 +28,12 @@ public class SkiplistMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
 
     /**
      * Gets the next key of the map in order.
-     * 
+     * <p>
+     * end.
      */
     public boolean hasNext(){
-      return node.key != null && edition == version;
+      //fix version number
+      return node.key != null; 
     }
     public void remove() 
     {

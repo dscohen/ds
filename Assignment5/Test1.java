@@ -34,6 +34,7 @@ public class Test1 extends TestHarness {
       m.put("ardvark", 42);
       m.remove("aydvark");
       m.iterator();
+        System.out.println("fool!");
       for (String i : m) {
         System.out.println(i);
       }

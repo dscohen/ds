@@ -23,7 +23,6 @@ public class SkiplistMapNode<K extends Comparable<K>,V> {
   key = k; value = v;
   flinks = new ArrayList<SkiplistMapNode<K,V>>(Collections.nCopies(ht+1,this));
   plinks = new ArrayList<SkiplistMapNode<K,V>>(Collections.nCopies(ht+1,this));
-    
   }
 
  @Override public String toString() {
