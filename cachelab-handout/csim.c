@@ -11,11 +11,11 @@
 typedef unsigned long long int hexAddress;
 
 typedef struct {
-  int b; //2**b words in block
+  int b; 
   int B; //1<<b
-  int s; //2**s sets in cache
+  int s; /
   long S; //1<<s
-  int E; //number of lines in set
+  int E; 
   long long unsigned hit;
   long long unsigned miss;
   long long unsigned eviction;
@@ -24,14 +24,16 @@ typedef struct {
 
 typedef struct {
   hexAddress tag;
-  int valid;
-  int cycleer;
+  int valid; //whether it has been written to
+  int cycleer;//variable to contain "processor" cycle
 } cline;
 
-int verby;
+int verby;//debugging
 
 int sniff(long S, int E, cline cache[S][E], long index, hexAddress tag, long cycle)
 {
+  //cache function, goes through cache to see if value is there or not.
+  //will update cache with cycle value, tag (if it misses), valid to 1.
   int evaluation = 0;
   int iterator;
   int currentLeastRecent = -1;
@@ -77,6 +79,7 @@ int sniff(long S, int E, cline cache[S][E], long index, hexAddress tag, long cyc
 int main(int argc, char **argv)
 {
   cacheStore par;
+  //set everything to zero
   bzero(&par, sizeof(par));
   char *trace_file;
   char c;
@@ -104,10 +107,6 @@ int main(int argc, char **argv)
     }
   }
 
-  if (par.s == 0 || par.E == 0 || par.b == 0 || trace_file == NULL) {
-    printf("%s: Missing required command line argument\n", argv[0]);
-    exit(1);
-  }
 
   par.S = 1 << par.s;
   cline cache[par.S][par.E];
@@ -116,12 +115,11 @@ int main(int argc, char **argv)
   char action[1];
   hexAddress addr;
   int byte;
-
-  //READ FILE
   FILE *file;
   file = fopen(trace_file, "r");
 
   long cycle = 0;
+  //for each line in file, read instruction (trace), and put it through sniff function
   while (fscanf(file, "%s %llx, %d", action, &addr, &byte) != EOF) {
     if (verby & ((char) action[0] != 'I')){
       printf("%s %llx %d ", action, addr, byte);
@@ -140,6 +138,7 @@ int main(int argc, char **argv)
       else {
         success = sniff(par.S, par.E, cache, setNumber, tag, cycle);
         par.hit++;
+        //M, extra hit after sniff
         printf("hit \n");
       }
       if (success == 1) {par.hit++;}

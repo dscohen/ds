@@ -12,6 +12,7 @@
 
 int is_transpose(int M, int N, int A[N][M], int B[M][N]);
 
+
 /* 
  * transpose_submit - This is the solution transpose function that you
  *     will be graded on for Part B of the assignment. Do not change
@@ -22,18 +23,46 @@ int is_transpose(int M, int N, int A[N][M], int B[M][N]);
 char transpose_submit_desc[] = "Transpose submission";
 void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 {
+  int i, j,k,l;
+  int temp;
+  int blocksize;
+  if (N == 32) {
+    blocksize = 8;
+  } else if (M ==64) {blocksize = 4;}
+  else {blocksize = 18;}
 
-for (int i = 0; i < 5; i += 4) {
-    for (int j = 0; j < 5; j += 4) {
-        // transpose the block beginning at [i,j]
-        for (int k = i; k < i + 4; ++k) {
-            for (int l = j; l < j + 4; ++l) {
-                dst[k + l*n] = src[l + k*n];
-            }
+  //divide matrix into blocks, then iterate over the blocks to avoid
+  //misses/evictions.
+  for (i = 0; i < N; i += blocksize) {
+    for (j = 0; j < M; j += blocksize) {
+      if (i != j) {
+        for ( k = i; k < i + blocksize && k < N; k++) {
+          for (l = j; l < j + blocksize && l < M; l++) {
+
+            temp = A[k][l];
+            B[l][k] = temp;
+          }
         }
+      }
+      else {
+        //to avoid cache thrashing, handle diagonals seperately.
+        for (k = i; k < i + blocksize && k < N; k++) {
+          //by using temp variable
+          temp = A[k][k];
+          for(l = i; l < k; l++) {
+            B[l][k] = A[k][l];
+          }
+          for (l = k+1; l < i + blocksize && l < N; l++) {
+            B[l][k] = A[k][l];
+          }
+          B[k][k] = temp;
+        }
+      }
     }
+  }
 }
-}
+
+
 
 /* 
  * You can define additional transpose functions below. We've defined
@@ -46,14 +75,14 @@ for (int i = 0; i < 5; i += 4) {
 char trans_desc[] = "Simple row-wise scan transpose";
 void trans(int M, int N, int A[N][M], int B[M][N])
 {
-    int i, j, tmp;
+  int i, j, tmp;
 
-    for (i = 0; i < N; i++) {
-        for (j = 0; j < M; j++) {
-            tmp = A[i][j];
-            B[j][i] = tmp;
-        }
-    }    
+  for (i = 0; i < N; i++) {
+    for (j = 0; j < M; j++) {
+      tmp = A[i][j];
+      B[j][i] = tmp;
+    }
+  }    
 
 }
 
@@ -66,11 +95,11 @@ void trans(int M, int N, int A[N][M], int B[M][N])
  */
 void registerFunctions()
 {
-    /* Register your solution function */
-    registerTransFunction(transpose_submit, transpose_submit_desc); 
+  /* Register your solution function */
+  registerTransFunction(transpose_submit, transpose_submit_desc); 
 
-    /* Register any additional transpose functions */
-    registerTransFunction(trans, trans_desc); 
+  /* Register any additional transpose functions */
+  registerTransFunction(trans, trans_desc); 
 
 }
 
@@ -81,15 +110,15 @@ void registerFunctions()
  */
 int is_transpose(int M, int N, int A[N][M], int B[M][N])
 {
-    int i, j;
+  int i, j;
 
-    for (i = 0; i < N; i++) {
-        for (j = 0; j < M; ++j) {
-            if (A[i][j] != B[j][i]) {
-                return 0;
-            }
-        }
+  for (i = 0; i < N; i++) {
+    for (j = 0; j < M; ++j) {
+      if (A[i][j] != B[j][i]) {
+        return 0;
+      }
     }
-    return 1;
+  }
+  return 1;
 }
 
