@@ -8,14 +8,14 @@
 
 
 
-typedef unsigned long long int memAddress;
+typedef unsigned long long int hexAddress;
 
 typedef struct {
-  int b; //2**b words in block
+  int b; 
   int B; //1<<b
-  int s; //2**s sets in cache
+  int s; /
   long S; //1<<s
-  int E; //number of lines in set
+  int E; 
   long long unsigned hit;
   long long unsigned miss;
   long long unsigned eviction;
@@ -23,49 +23,54 @@ typedef struct {
 } cacheStore;
 
 typedef struct {
-  memAddress tag;
-  int valid;
-  int counter;
+  hexAddress tag;
+  int valid; //whether it has been written to
+  int cycleer;//variable to contain "processor" cycle
 } cline;
-int verby;
 
-int sniff(long S, int E, cline cache[S][E], long index, memAddress tag, long count)
+int verby;//debugging
+
+int sniff(long S, int E, cline cache[S][E], long index, hexAddress tag, long cycle)
 {
+  //cache function, goes through cache to see if value is there or not.
+  //will update cache with cycle value, tag (if it misses), valid to 1.
   int evaluation = 0;
-  int lineIndex;
-  int minVisit = -1;
-  int minIndex = 0;
+  int iterator;
+  int currentLeastRecent = -1;
+  int leastRecent = 0;
   printf(" %lu ", index);
-  for (lineIndex = 0; lineIndex < E; lineIndex++) {
-    cline *pointer = &cache[index][lineIndex];
-    if (pointer -> valid == 0) {
+  for (iterator = 0; iterator < E; iterator++) {
+    cline *location = &cache[index][iterator];
+    if (location -> valid == 0) {
       evaluation = -1;
       if (verby) {
-        printf(" miss ");}
-      pointer->tag = tag;
-      pointer->valid = 1;
-      pointer->counter = count;
+        printf(" miss ");
+      }
+      location->tag = tag;
+      location->valid = 1;
+      location->cycleer = cycle;
       break;
-    } else {
-      if (pointer -> tag == tag) {
+    } 
+    else {
+      if (location -> tag == tag) {
         if (verby) {printf(" hit ");}
-        pointer -> counter = count;
+        location -> cycleer = cycle;
         evaluation = 1;
         break;
       }
     }
   }
   if (evaluation == 0) {
-    for (lineIndex = 0; lineIndex < E; lineIndex++) {
-      if (minVisit == -1 || minVisit > cache[index][lineIndex].counter) {
-        minVisit = cache[index][lineIndex].counter;
-        minIndex = lineIndex;
+    for (iterator = 0; iterator < E; iterator++) {
+      if (currentLeastRecent == -1 || currentLeastRecent > cache[index][iterator].cycleer) {
+        currentLeastRecent = cache[index][iterator].cycleer;
+        leastRecent = iterator;
       }
     }
     if (verby) {printf( " miss eviction ");}
-    cache[index][minIndex].tag = tag;
-    cache[index][minIndex].counter = count;
-    cache[index][minIndex].valid = 1;
+    cache[index][leastRecent].tag = tag;
+    cache[index][leastRecent].cycleer = cycle;
+    cache[index][leastRecent].valid = 1;
   }
   return evaluation;
 }
@@ -74,9 +79,8 @@ int sniff(long S, int E, cline cache[S][E], long index, memAddress tag, long cou
 int main(int argc, char **argv)
 {
   cacheStore par;
-  par.hit = 0;
-  par.miss = 0;
-  par.eviction = 0;
+  //set everything to zero
+  bzero(&par, sizeof(par));
   char *trace_file;
   char c;
   while( (c=getopt(argc,argv,"s:E:b:t:vh")) != -1){
@@ -103,47 +107,46 @@ int main(int argc, char **argv)
     }
   }
 
-  if (par.s == 0 || par.E == 0 || par.b == 0 || trace_file == NULL) {
-    printf("%s: Missing required command line argument\n", argv[0]);
-    exit(1);
-  }
-  par.S = par.s << 1;
+
+  par.S = 1 << par.s;
   cline cache[par.S][par.E];
+  bzero(cache, par.S*par.E*sizeof(cline));
 
   char action[1];
-  memAddress addr;
+  hexAddress addr;
   int byte;
-
-  //READ FILE
   FILE *file;
   file = fopen(trace_file, "r");
 
-  long count = 0;
-  while (fscanf(file, "%s %11x, %d", action, &addr, &byte) != EOF) {
+  long cycle = 0;
+  //for each line in file, read instruction (trace), and put it through sniff function
+  while (fscanf(file, "%s %llx, %d", action, &addr, &byte) != EOF) {
     if (verby & ((char) action[0] != 'I')){
-      printf("%s %11x %s ", action, addr, byte);
+      printf("%s %llx %d ", action, addr, byte);
     }
-      count++;
-      memAddress tag;
-      long setIndex;
-      int decision;
+      cycle++;
+      hexAddress tag;
+      long setNumber;
+      int success;
       addr = addr >> par.b;
-      setIndex = addr & (par.S - 1);
+      setNumber = addr & (par.S - 1);
       tag = addr >> par.s;
       if ((char)action[0] == 'L' || (char)action[0] == 'S') {
-        decision = sniff(par.S, par.E, cache, setIndex, tag, count);
+        success = sniff(par.S, par.E, cache, setNumber, tag, cycle);
         printf("\n");
       } else if ((char)action[0] == 'I') {continue;}
       else {
-        decision = sniff(par.S, par.E, cache, setIndex, tag, count);
+        success = sniff(par.S, par.E, cache, setNumber, tag, cycle);
+        par.hit++;
+        //M, extra hit after sniff
         printf("hit \n");
       }
-      if (decision == 1) {par.hit++;}
-      else if (decision == 0) {
+      if (success == 1) {par.hit++;}
+      else if (success == 0) {
         par.miss++;
         par.eviction++;
       }
-      else if(decision = -1) {par.miss++;}
+      else if(success == -1) {par.miss++;}
     }
       printSummary(par.hit, par.miss, par.eviction);
       return 0;
