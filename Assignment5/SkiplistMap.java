@@ -17,10 +17,16 @@ import java.util.*;
 import java.lang.Math;
 
 public class SkiplistMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
-  class SkipListMapIterator<K extends Comparable<K>> implements Iterator<K> {
+  public class SkipListMapIterator<K extends Comparable<K>> implements Iterator<K> {
     SkiplistMapNode<K,V> node;
-    int edition;
-    SkipListMapIterator(SkiplistMapNode<K,V> start){
+    K temp;
+    int edition = version;
+    SkiplistMap<K,V> map;
+    /**
+     * Internal Constructor for iterator.
+     */
+    SkipListMapIterator(SkiplistMap<K,V> maps){
+      SkiplistMapNode<K,V> start = maps.head;
       node = start.flinks.get(0);
       int edition = version;
     }
@@ -33,15 +39,22 @@ public class SkiplistMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
      */
     public boolean hasNext(){
       //fix version number
-      return node.key != null; 
+      if (edition != version) {throw new RuntimeException("Iterator has invalid version");}
+      return (node.key) != null;
     }
     public void remove() 
     {
+     if (edition != version) {throw new RuntimeException("Iterator has invalid version");}
+      try {
+      map.remove(temp);
+      edition = -1;
+      } catch (Exception e) {}
+
     }
     public K next() throws NoSuchElementException {
       if (!hasNext()) throw new NoSuchElementException();
 
-      K temp = node.key;
+      temp = node.key;
       node = node.flinks.get(0);
       return temp;
     }
@@ -74,8 +87,12 @@ public class SkiplistMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
       tail.plinks.set(i, head);
     }
   }
+  /**
+   * Creates iterator for skiplist.
+   * @return iterator for skiplist.
+   */
   public SkipListMapIterator<K> iterator() {
-    SkipListMapIterator<K> it = new SkipListMapIterator<K>(head);
+    SkipListMapIterator<K> it = new SkipListMapIterator<K>(this);
     return it;
 
   }
@@ -177,7 +194,7 @@ public class SkiplistMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
    * throws error if key is null, returns true if remove was succesful, false if it doesn't exist.
    *
    * @param key key of value you want to remove
-   * @return 
+   * @return true or false if whether operation was succesful.
    */
 
   public boolean remove(K key) throws SortedMapException {
@@ -195,6 +212,10 @@ public class SkiplistMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
     return true;
 
   }
+  /**
+   * Prints out list in correct format.
+   * @return String of list.
+   */
   @Override public String toString() {
     this.iterator();
     String build = "";
@@ -206,6 +227,10 @@ public class SkiplistMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
     }
     return build;
   }
+  /**
+   * Calculates step - reachable nodes.
+   * @return SkiplistMap Integer,Integer of the above pair.
+   */
 
   public SkiplistMap<Integer, Integer> calculateStats() {
     SkiplistMap<Integer,Integer> stats = new SkiplistMap<Integer,Integer>();
@@ -221,50 +246,11 @@ public class SkiplistMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
       } catch (Exception e) {System.out.println(e);}
     }
 
-    Deque<SkiplistMapNode<K,V>> stack = new LinkedList<SkiplistMapNode<K,V>>();
-    //int depth = 1;
-    //if (root ==null){
-    //try {
-    //stats.put(0,0); return stats;
-    //} catch (SortedMapException e) {}}
-    //Skipl<K,V> Noderoot;
-    ////add left chain
-    //while (N != null){
-    //stack.push(N);
-    //N = N.left;
-    //depth++;
-    //}
-    //while(stack.size() != 0) {
-    //depth--;
-    //N = stack.pop();
-    //System.out.println(depth + " " + N.toString());
-    //try {
-    //Skipl<IntegNodeInteger> adding_node = stats.find(depth);
-    //stats.put(depth, adding_node.value + 1);
-    //} catch(Exception e) {
-    //try {
-    //stats.put(depth, 1);
-    //} catch (SortedMapException f) {}
-    //}
-    ////add left chain of right node
-    //if (N.right != null){
-    //N = N.right;
-    //System.out.println(N);
-    //while (N != null){
-    //depth++;
-    //System.out.println(depth +" adding left" +N);
-    //stack.push(N);
-    //N = N.left;
-    //}
-    //}
-    //}
-    //System.out.println(depth);
     return stats;
 
 
 
 
-    //Get left most, then as un pop, get right. Keep track of depth(steps)
   }
 
 

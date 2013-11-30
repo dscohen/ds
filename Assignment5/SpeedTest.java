@@ -10,13 +10,13 @@ public class SpeedTest {
 	    //Change this to change whether you create a BST 
 	    //or a skiplist
 	    SortedMap<String,Integer> t = 
-		//new BSTMap<String,Integer>();
+		 //BSTMap<String,Integer>();
        new SkiplistMap<String,Integer>();
 
 	    //Try the different files here
-	    //FileParser fp = new FileParser("WarAndPeace.txt");
-	      FileParser fp = new FileParser("RomeoJuliet.txt");
-	    //	FileParser fp = new FileParser("TWL06.txt");
+	   // FileParser fp = new FileParser("WarAndPeace.txt");
+	    // FileParser fp = new FileParser("RomeoJuliet.txt");
+	    	FileParser fp = new FileParser("TWL061.txt");
 
 	    List<String> words = fp.getAllWords();
 	    Date startTime1 = new Date();

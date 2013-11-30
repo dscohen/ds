@@ -23,22 +23,43 @@ public class BSTMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
 //remove will remove last next()
   class BSTInorderIterator<K extends Comparable<K>> implements Iterator<K> {
     Deque<BSTMapNode<K,V>> stack;
+    K temp;
     int edition;
-    BSTInorderIterator(BSTMapNode<K,V> root){
+    BSTMap<K,V> map;
+    BSTInorderIterator(BSTMap<K,V> r){
+      map = r;
+      BSTMapNode<K,V> root = r.root;
       stack = new LinkedList<BSTMapNode<K,V>>();
       addLeftChain(root);
       edition = version;
     }
+    /**
+     * Removes current nexted node from map it is iterating over.
+     */
 
-    public void remove() throws UnsupportedOperationException
+    public void remove() 
     {
-      throw new UnsupportedOperationException("Not implemented");
+      if (edition != version) {throw new RuntimeException("Iterator has invalid version");}
+      try {
+        map.remove(temp);
+        edition = -1;
+      } catch (Exception e) {};
     }
+    /**
+     * Internal checker function to make sure nothing crashes.
+     * @return boolean whether there is a next node.
+     */
 
     public boolean hasNext()
     {
-      return stack.size() != 0 && edition == version;
+      boolean result = true;
+      if (edition != version) {throw new RuntimeException("Iterator has invalid version");}
+      result = stack.size() != 0; 
+      return result;
     }
+    /**
+     * Private helper.
+     */
 
     private void addLeftChain(BSTMapNode<K,V> N){
       while(N != null){
@@ -46,6 +67,11 @@ public class BSTMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
         N = N.left;
       }
     }
+    /**
+     * Returns next key for node.
+     * <p>
+     * Makes sure that current version is up to date and that there is a next node to get.
+     */
 
     public K next() throws NoSuchElementException
     {
@@ -53,6 +79,7 @@ public class BSTMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
       if (!hasNext()) throw new NoSuchElementException();
       BSTMapNode<K,V> N = stack.pop();
       if(N.right != null) addLeftChain(N.right);
+      temp = N.key;
       return N.key;
     }
   }
@@ -62,9 +89,13 @@ public class BSTMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
   protected BSTMapNode<K,V> root;
   protected int version = 0;
   protected int steps;
+  /**
+   * Create Iterator for map.
+   * @return Inorder Iterator.
+   */
 
   public BSTInorderIterator<K> iterator() {
-    BSTInorderIterator<K> it = new BSTInorderIterator<K>(root);
+    BSTInorderIterator<K> it = new BSTInorderIterator<K>(this);
     return it;
   }
   /**
@@ -132,9 +163,10 @@ public class BSTMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
    */
 
   public boolean remove(K key) throws SortedMapException {
-    if (key == null || root == null) {throw new SortedMapException ("No Null");}
+    if (key == null) {throw new SortedMapException ("No Null");}
     //if key exists, find it, if it throws error, return false.
     BSTMapNode<K,V> N = null;
+    if (root == null) {return false;}
     try {
       N = find(key);
       if (N == null) {return false;}
@@ -147,8 +179,6 @@ public class BSTMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
       //no left dependencies, make right node take it's pointer of parent
       shiftNodeUp(N.right);
     } else if (N.right == null) {
-    System.out.println(N);
-    System.out.println(N.left);
       //same with right
       shiftNodeUp(N.left);
     } else {
@@ -294,57 +324,17 @@ public class BSTMap<K extends Comparable<K>,V> implements SortedMap<K,V> {
       try {
         BSTMapNode<K,V> N = this.find(ke);
         BSTMapNode<Integer, Integer> Z = stats.find(steps);
-        System.out.println(steps);
         if (Z != null) {Z.value += 1;}
         else {
           stats.put(steps, 1);}
       } catch (Exception e) {System.out.println(e);}
     }
     
-    Deque<BSTMapNode<K,V>> stack = new LinkedList<BSTMapNode<K,V>>();
-    //int depth = 1;
-    //if (root ==null){
-      //try {
-      //stats.put(0,0); return stats;
-      //} catch (SortedMapException e) {}}
-    //BSTMapNode<K,V> N = root;
-    ////add left chain
-    //while (N != null){
-      //stack.push(N);
-      //N = N.left;
-      //depth++;
-    //}
-    //while(stack.size() != 0) {
-      //depth--;
-      //N = stack.pop();
-      //System.out.println(depth + " " + N.toString());
-      //try {
-        //BSTMapNode<Integer, Integer> adding_node = stats.find(depth);
-        //stats.put(depth, adding_node.value + 1);
-      //} catch(Exception e) {
-        //try {
-        //stats.put(depth, 1);
-        //} catch (SortedMapException f) {}
-      //}
-      ////add left chain of right node
-      //if (N.right != null){
-        //N = N.right;
-        //System.out.println(N);
-        //while (N != null){
-          //depth++;
-          //System.out.println(depth +" adding left" +N);
-          //stack.push(N);
-          //N = N.left;
-        //}
-      //}
-    //}
-    //System.out.println(depth);
     return stats;
 
 
 
 
-    //Get left most, then as un pop, get right. Keep track of depth(steps)
   }
   
 

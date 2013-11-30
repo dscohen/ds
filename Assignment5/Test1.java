@@ -19,30 +19,33 @@ public class Test1 extends TestHarness {
 	    ();
 
 	try {
+      boolean result = true;
+      //testing correct performance of basic functions
 	    //Check what happens if we try to get a value from an empty set
-      m.put("aedvark", 4);
-      m.put("aqdvark", 2);
-      m.put("ajdvark", 5);
-      m.put("ardvark", 6);
-      m.put("aydvark", 7);
-      m.put("audvark", 8);
-      m.put("afdvark", 9);
-      m.put("addvark", 0);
-      m.put("addvark", 12);
-      m.put("asdvark", 22);
-      m.put("axdvark", 32);
-      m.put("ardvark", 42);
-      m.remove("aydvark");
+      m.put("b", 2);
+      m.put("a", 4);
+      m.put("c", 5);
+      m.put("d", 6);
+      m.put("d", 7);
+      m.put("x", 8);
+      m.put("d", 9);
+      m.put("s", 0);
+      m.put("v", 12);
+      m.put("p", 22);
+      m.put("z", 32);
+      m.put("f", 42);
+      m.remove("d");
+      String answerKey = "abcfpsvxz";
+      String test = "";
       m.iterator();
-        System.out.println("fool!");
       for (String i : m) {
         System.out.println(i);
+        test += i;
       }
-      System.out.println(m.get("aqdvark"));
-      System.out.println(m.calculateStats());
+      if (test.compareTo(answerKey) != 0) {result = false;}
 
 	    //The result should be null
-	    return (true);
+	    return result;
 	} catch (Exception e){
 	    //if we catch an exception, something went wrong
 	    return false;
