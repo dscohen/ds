@@ -25,6 +25,13 @@ import java.util.Set;
 
 
 public class DijkstrasAlgorithm<T> {
+  private final List<Node<T,Integer>> nodes;
+  private final List<Edge<T, Integer>> edgees;
+  private Set<Node<T,Integer>> settledNodes;
+  private Set<Node<T, Integer>> unSettledNodes;
+  private Map<Node<T, Integer>, Node<T, Integer>> predecessors;
+  private Map<Node<T, Integer>, Integer> distance;
+  private Graph<T,Integer> graph;
 
   /** 
    * Constructor. A Graph<T,Integer> must be provided.
@@ -34,11 +41,13 @@ public class DijkstrasAlgorithm<T> {
    * whose edges have Integer labels.
    */
   public DijkstrasAlgorithm(Graph<T,Integer> graph) {
+    this.nodes = graph.getNodes();
+    graph = graph;
 
-      // Implement.
+    // Implement.
 
-      // Hint: You should be able to reuse much of
-      // the code from the lecture notes.
+    // Hint: You should be able to reuse much of
+    // the code from the lecture notes.
 
   }
 
@@ -47,12 +56,50 @@ public class DijkstrasAlgorithm<T> {
    * The main method that kicks off the algorithm. 
    */
   public void execute(Node<T,Integer> source) {
+    settledNodes = new HashSet<Node<T,Integer>>();
+    unSettledNodes = new HashSet<Node<T, Integer>>();
+    distance = new HashMap<Node<T,Integer>, Integer>();
+    predecessors = new HashMap<Node<T,Integer>, Node<T,Integer>>();
+    distance.put(source,0);
+    unSettledNodes.add(source);
+    while (unSettledNodes.size() > 0) {
+      Node<T,Integer> node = getMinimum(unSettledNodes);
+      settledNodes.add(node);
+      unSettledNodes.remove(node);
+      findMinimalDistances(node);
+    }
+  }
 
-      // Implement.
+  private void findMinimalDistances(Node<T,Integer> node) {
+    List<Node<T,Integer>> adjacentNodes = getNeighbors(node);
+    for (Node<T,Integer> target : adjacentNodes) {
+      if (getShortestDistance(target) > getShortestDistance(node) + getDistance(node, target)) {
+        distance.put(target, getShortestDistance(node) + getDistance(node, target));
+        predecessors.put(target, node);
+        unSettledNodes.add(target);
+      }
+    }
+  }
 
-      // Hint: You should be able to reuse much of
-      // the code from the lecture notes.
-      
+  private int getDistance(Node<T,Integer> node, Node<T,Integer> target) {
+    List<Edge<T,Integer>> edges = node.getOutArcs();
+    //assuming tail is what the arrow points to
+    for (Edge<T, Integer> edge : edges) {
+      if (edge.getTail().equals(target)) {
+        return edge.getLabel();
+      }
+    }
+  }
+
+  private List<Node<T,Integer> getNeighbors(Node<T,Integer> node) {
+    List<Node<T,Integer>> neighbors = new ArrayList
+
+
+    // Implement.
+
+    // Hint: You should be able to reuse much of
+    // the code from the lecture notes.
+
   }
 
   /**
@@ -61,10 +108,10 @@ public class DijkstrasAlgorithm<T> {
    */
   public LinkedList<Node<T,Integer>> getPath(Node<T,Integer> target) {
 
-      // Implement.
+    // Implement.
 
-      // Hint: You should be able to reuse much of
-      // the code from the lecture notes.
+    // Hint: You should be able to reuse much of
+    // the code from the lecture notes.
 
   }
 

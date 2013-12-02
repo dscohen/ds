@@ -21,12 +21,13 @@ import java.util.List;
 
 
 public class Graph<T, L> {
+  protected HashMap<T,Node<T,L>> graphed;
 
     // Add private data here.
 
     public Graph() {
+      graphed = new HashMap<T,Node<T,L>>(); 
 
-	// Implement.
 
     }
 
@@ -35,8 +36,9 @@ public class Graph<T, L> {
      * Return null if no such node exists.
      */
     public Node<T,L> findNode(T lab) {
+      if (lab == null) {return null;}
+      return graphed.get(lab);
 
-	// Implement.
 
     }
 
@@ -46,8 +48,12 @@ public class Graph<T, L> {
      * this method throws an {@link InvalidOperationException}.
      */
     public Node<T,L> addNode(T lab) throws InvalidOperationException {
+      if (findNode(lab) != null) {throw new InvalidOperationException("Already exists");}
+      if (lab == null) {throw new InvalidOperationException("No Null");}
+      Node<T,L> N = new Node<T,L>(lab);
+      graphed.put(lab, null);
 
-	// Implement.
+      return N;
 
     }
 
@@ -56,8 +62,12 @@ public class Graph<T, L> {
      * Return a list of all of the nodes in the Graph.
      */
     public List<Node<T,L>> getNodes() {
+      ArrayList<Node<T,L>> listofNodes = new ArrayList<Node<T,L>>();
+      for (T key : graphed.keySet()) {
+        listofNodes.add(findNode(key));
+      }
+      return listofNodes;
 
-	// Implement.
 
 	// Hint: Use an ArrayList
 
@@ -76,18 +86,22 @@ public class Graph<T, L> {
      * doesn't already exist.
      */
     public Edge<T,L> addEdge(T n, L l, T m) throws InvalidOperationException {
-
-	// Implement.
-
+      Node<T,L> N = findNode(n);
+      Node<T,L> M = findNode(m);
+      if (N == null || M == null || l == null) 
+        throw new InvalidOperationException("Nodes don't exist or edge label is null");
+      Edge<T,L> e = new Edge<T,L>(l,N,M);
+      N.addOutArc(e);
+      return e;
     }
 
     /** 
      * Variant of {@link addEdge} in which the Nodes are specified
      * rather than node labels.
      */
-    public Edge<T,L> addEdge(Node<T,L> N, L l, Node<T,L> M) {
+    public Edge<T,L> addEdge(Node<T,L> N, L l, Node<T,L> M) throws InvalidOperationException {
+      return addEdge(N.getLabel(), l, M.getLabel());
 
-	// Implement.
 
     }
 
@@ -95,8 +109,9 @@ public class Graph<T, L> {
      * Add an edge from n to m, as well as an edge from m to n.
      */
     public void addBiEdge(T n, L l, T m) throws InvalidOperationException {
+      addEdge(n, l, m);
+      addEdge(m, l, n);
 
-	// Implement.
 
     }
 
@@ -104,8 +119,15 @@ public class Graph<T, L> {
      * Display the graph as in the Assignment description
      */
     public String toString() {
+      String print = "";
+      List<Node<T,L>> listy = getNodes();
+      for (Node<T,L> N : listy) {
+        print+= N.toStringWithEdges();
+        print+="\n";
+      }
+      return print;
 
-	// Implement.
+
 
 	// Hint: You may want to use a StringBuilder object
 	// to assemble a string from all of the nodes.
