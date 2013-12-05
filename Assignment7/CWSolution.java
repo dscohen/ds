@@ -69,7 +69,9 @@ public class CWSolution {
     private String getNextWord() {
       while (true) {
         if (m.find()) {
+          //IF REGEX STILL LOVE ME
           return m.group();
+          //RETURN WORD FOUND BY REGEX TO ME
         }
         return null;
       }
