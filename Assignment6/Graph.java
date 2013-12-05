@@ -51,7 +51,7 @@ public class Graph<T, L> {
       if (findNode(lab) != null) {throw new InvalidOperationException("Already exists");}
       if (lab == null) {throw new InvalidOperationException("No Null");}
       Node<T,L> N = new Node<T,L>(lab);
-      graphed.put(lab, null);
+      graphed.put(lab, N);
 
       return N;
 
@@ -90,7 +90,7 @@ public class Graph<T, L> {
       Node<T,L> M = findNode(m);
       if (N == null || M == null || l == null) 
         throw new InvalidOperationException("Nodes don't exist or edge label is null");
-      Edge<T,L> e = new Edge<T,L>(l,N,M);
+      Edge<T,L> e = new Edge<T,L>(l,M,N);
       N.addOutArc(e);
       return e;
     }

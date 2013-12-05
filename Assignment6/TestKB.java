@@ -1,3 +1,4 @@
+
 /**
  * Test2 -- Example test class testing {@link DijkstrasAlgorithm}
  * <p>
@@ -17,9 +18,9 @@
 
 import java.util.LinkedList;
 
-public class Test2 extends TestHarness {
+public class TestKB extends TestHarness {
 
-    public Test2(String s) { super(s); }
+    public TestKB(String s) { super(s); }
 
     public boolean test() {
 	Graph<String,Integer> g = new Graph<String,Integer>();
@@ -29,25 +30,15 @@ public class Test2 extends TestHarness {
 	Node<String,Integer> n2;
 	Node<String,Integer> n3;
 	Node<String,Integer> n4;
-	Node<String,Integer> n5;
-	Node<String,Integer> n6;
 
 	try {
-	    n1 = g.addNode("1");
-	    n2 = g.addNode("2");
-	    n3 = g.addNode("3");
-	    n4 = g.addNode("4");
-	    n5 = g.addNode("5");
-	    n6 = g.addNode("6");
-	    g.addBiEdge("1",7,"2");
-	    g.addBiEdge("1",9,"3");
-	    g.addBiEdge("1",14,"6");
-	    g.addBiEdge("2",10,"3");
-	    g.addBiEdge("2",15,"4");
-	    g.addBiEdge("3",11,"4");
-	    g.addBiEdge("3",2,"6");
-	    g.addBiEdge("4",6,"5");
-	    g.addBiEdge("6",9,"5");
+	    n1 = g.addNode("Keven Bacon");
+	    n2 = g.addNode("Mickey Rourke");
+	    n3 = g.addNode("Marisa Tomei");
+	    n4 = g.addNode("Joe Pesci");
+	    g.addBiEdge("Keven Bacon",1,"Mickey Rourke");
+	    g.addBiEdge("Mickey Rourke",1,"Marisa Tomei");
+	    g.addBiEdge("Marisa Tomei",1,"Joe Pesci");
 	} catch (InvalidOperationException e) {
 	    return false;
 	}
@@ -57,14 +48,13 @@ public class Test2 extends TestHarness {
 	da.execute(n1);
 
 	// Get the path from n1 to n5 that was computed by da
-  System.out.println(da.settledNodes);
-	LinkedList<Node<String,Integer>> ll = da.getPath(n5);
+	LinkedList<Node<String,Integer>> ll = da.getPath(n4);
 	System.out.println("path: "+ll.toString());
 	// Confirm that this path is what it should be
-	if(! ll.pop().getLabel().equals("1")) return false;
-	if(! ll.pop().getLabel().equals("3")) return false;
-	if(! ll.pop().getLabel().equals("6")) return false;
-	if(! ll.pop().getLabel().equals("5")) return false;
+	if(! ll.pop().getLabel().equals("Keven Bacon")) return false;
+	if(! ll.pop().getLabel().equals("Mickey Rourke")) return false;
+	if(! ll.pop().getLabel().equals("Marisa Tomei")) return false;
+	if(! ll.pop().getLabel().equals("Joe Pesci")) return false;
 	if(  ll.size() != 0) return false;
 
 	//System.out.println(g.toString());

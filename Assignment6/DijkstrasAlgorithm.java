@@ -26,12 +26,11 @@ import java.util.Set;
 
 public class DijkstrasAlgorithm<T> {
   private final List<Node<T,Integer>> nodes;
-  private final List<Edge<T, Integer>> edgees;
-  private Set<Node<T,Integer>> settledNodes;
-  private Set<Node<T, Integer>> unSettledNodes;
-  private Map<Node<T, Integer>, Node<T, Integer>> predecessors;
-  private Map<Node<T, Integer>, Integer> distance;
-  private Graph<T,Integer> graph;
+  public Set<Node<T,Integer>> settledNodes;
+  public Set<Node<T, Integer>> unSettledNodes;
+  public Map<Node<T, Integer>, Node<T, Integer>> predecessors;
+  public Map<Node<T, Integer>, Integer> distance;
+  public Graph<T,Integer> graph;
 
   /** 
    * Constructor. A Graph<T,Integer> must be provided.
@@ -60,6 +59,7 @@ public class DijkstrasAlgorithm<T> {
     unSettledNodes = new HashSet<Node<T, Integer>>();
     distance = new HashMap<Node<T,Integer>, Integer>();
     predecessors = new HashMap<Node<T,Integer>, Node<T,Integer>>();
+    if( source == null)return;
     distance.put(source,0);
     unSettledNodes.add(source);
     while (unSettledNodes.size() > 0) {
@@ -85,34 +85,85 @@ public class DijkstrasAlgorithm<T> {
     List<Edge<T,Integer>> edges = node.getOutArcs();
     //assuming tail is what the arrow points to
     for (Edge<T, Integer> edge : edges) {
-      if (edge.getTail().equals(target)) {
+      if (edge.getHead().equals(target)) {
         return edge.getLabel();
       }
     }
+    throw new RuntimeException("getDistance function broke");
   }
 
-  private List<Node<T,Integer> getNeighbors(Node<T,Integer> node) {
-    List<Node<T,Integer>> neighbors = new ArrayList
-
-
-    // Implement.
-
-    // Hint: You should be able to reuse much of
-    // the code from the lecture notes.
-
+  private List<Node<T,Integer>> getNeighbors(Node<T,Integer> node) {
+    List<Node<T,Integer>> neighbors = new ArrayList<Node<T,Integer>>();
+    List<Edge<T,Integer>> edges = node.getOutArcs();
+    for (Edge<T,Integer> edge : edges) {
+      if (!isSettled(edge.getHead())) {
+        neighbors.add(edge.getHead());
+          }
+    }
+    return neighbors;
   }
+
+  private Node<T,Integer> getMinimum(Set<Node<T,Integer>> nodes) {
+    Node<T,Integer> minimum = null;
+    for (Node<T,Integer> node : nodes) {
+      if (minimum == null) {
+        minimum = node;
+      } else {
+        if (getShortestDistance(node) < getShortestDistance(minimum)) {
+          minimum = node;
+        }
+      }
+    }
+    return minimum;
+  }
+
+  private boolean isSettled(Node<T,Integer> node) {
+    return settledNodes.contains(node);
+  }
+
+  private int getShortestDistance(Node<T,Integer> destination) {
+    Integer d = distance.get(destination);
+    if (d == null) {
+      return Integer.MAX_VALUE;
+    } else {
+      return d;
+    }
+  }
+
+
+
+  // Implement.
+
+  // Hint: You should be able to reuse much of
+  // the code from the lecture notes.
+
 
   /**
    * This method returns the path from the source to the selected target and
    * null if no path exists
    */
   public LinkedList<Node<T,Integer>> getPath(Node<T,Integer> target) {
-
-    // Implement.
-
-    // Hint: You should be able to reuse much of
-    // the code from the lecture notes.
-
+    LinkedList<Node<T,Integer>> path = new LinkedList<Node<T,Integer>>();
+    Node<T, Integer> step = target;
+    if (predecessors.get(step) == null) {
+      return null;
+    }
+    path.add(step);
+    while (predecessors.get(step) != null) {
+      step = predecessors.get(step);
+      path.add(step);
+    }
+    Collections.reverse(path);
+    return path;
   }
-
 }
+
+
+// Implement.
+
+// Hint: You should be able to reuse much of
+// the code from the lecture notes.
+
+
+
+
